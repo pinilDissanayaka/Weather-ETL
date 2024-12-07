@@ -1,3 +1,1 @@
 # Weather-ETL
-
-WEATHER_API='fc78a469d8c847ac9b7996c55b895e2b'

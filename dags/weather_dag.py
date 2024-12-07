@@ -6,7 +6,7 @@ import json
 from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.operators.python import PythonOperator
 import pandas as pd
-
+from tasks import is_api_is_ready
 
 with DAG(
     'Weather_DAG',
@@ -16,6 +16,4 @@ with DAG(
     tags=['example'],
 ) as dag:
     
-    is_api_ready=HttpSensor(
-        
-    )
+    is_api_ready=is_api_is_ready

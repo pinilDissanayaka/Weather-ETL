@@ -7,7 +7,8 @@ default_args={
     "email": ["V7jyT@example.com"],
     "email_on_failure": False,
     "email_on_retry": False,
-    "retries": 1,
+    "retries": 2,
     "retry_delay": timedelta(minutes=2)
 }
+
 

@@ -29,7 +29,7 @@ with DAG(
     is_api_ready = HttpSensor(
         task_id ='is_api_is_ready',
         http_conn_id='weather_api',
-        endpoint='/data/2.5/weather?q=Portland&APPID=5031cde3d1a8b9469fd47e998d7aef79'
+        endpoint='/data/2.5/weather?q=Portland&APPID=fc78a469dfc78a469d8c847ac9b7996c55b895e2b'
         )
     
     

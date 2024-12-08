@@ -41,9 +41,9 @@ with DAG(
         log_response=True
     )
     
-    load_data=PythonOperator(
+    load_extracked_data=PythonOperator(
         task_id="load_data",
         python_callable=load_data
     )
     
-    is_api_ready >> extract_data >> load_data
+    is_api_ready >> extract_data >> load_extracked_data

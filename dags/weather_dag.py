@@ -5,8 +5,19 @@ import json
 from airflow.providers.http.operators.http import SimpleHttpOperator
 from airflow.operators.python import PythonOperator
 import pandas as pd
+import os
+from airflow.providers.http.operators.http import SimpleHttpOperator
 
 
+def transform_data(task_instance):
+    data = task_instance.xcom_pull(task_ids='extract_weather_data')
+    
+    
+def logging_data(task_instance):
+    data = task_instance.xcom_pull(task_ids='extract_weather_data')    
+    
+    with open('data.txt', 'w') as f:
+        f.write(str(data))
 
 
 def kelvin_to_fahrenheit(temp_in_kelvin):
@@ -14,8 +25,7 @@ def kelvin_to_fahrenheit(temp_in_kelvin):
     return temp_in_fahrenheit
 
 
-def transform_load_data(task_instance):
-    data = task_instance.xcom_pull(task_ids='extract_weather_data')
+
 
 
 
@@ -41,7 +51,7 @@ with DAG('weather_dag',
         is_weather_api_ready = HttpSensor(
             task_id ='is_weather_api_ready',
             http_conn_id='weathermap_api',
-            endpoint="/data/2.5/weather?q=portland&appid=fc78a469d8c847ac9b7996c55b895e2b&units=metric"
+            endpoint="/data/2.5/weather?q=anuradhapura&appid=fc78a469d8c847ac9b7996c55b895e2b&units=metric"
         )
 
 
@@ -55,8 +65,14 @@ with DAG('weather_dag',
         )
 
         transform_weather_data = PythonOperator(
-            task_id= 'transform_load_weather_data',
-            python_callable=transform_load_data
+            task_id= 'transform_weather_data',
+            python_callable=logging_data
+        )
+        
+        
+        logging_weather_data = PythonOperator(
+            task_id= 'logging_weather_data',
+            python_callable=logging_data
         )
 
 

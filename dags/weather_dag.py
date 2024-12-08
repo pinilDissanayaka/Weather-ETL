@@ -12,12 +12,18 @@ city_name = "London"
 API_KEY="fc78a469dfc78a469d8c847ac9b7996c55b895e2b"
 
 
+def load_data(task_instance):
+    data=task_instance.xcom_pull(task_ids="extract_data")
+    print(data)
+
+
 with DAG(
     'Weather_DAG',
     default_args=default_args,
     description='A simple DAG used to ETL',
     schedule_interval=timedelta(days=1),
     tags=['example'],
+    catchup=False
 ) as dag:
     
     is_api_ready=HttpSensor(
@@ -35,4 +41,9 @@ with DAG(
         log_response=True
     )
     
-    is_api_ready >> extract_data
+    load_data=PythonOperator(
+        task_id="load_data",
+        python_callable=load_data
+    )
+    
+    is_api_ready >> extract_data >> load_data

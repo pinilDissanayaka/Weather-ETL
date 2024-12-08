@@ -26,11 +26,12 @@ with DAG(
     catchup=False
 ) as dag:
     
-    is_api_ready=HttpSensor(
-        task_id="is_api_is_ready",
-        http_conn_id="weather_api",
-        endpoint=f"/data/2.5/weather?q={city_name}&appid={API_KEY}"
-    )
+    is_api_ready = HttpSensor(
+        task_id ='is_api_is_ready',
+        http_conn_id='weather_api',
+        endpoint='/data/2.5/weather?q=Portland&APPID=5031cde3d1a8b9469fd47e998d7aef79'
+        )
+    
     
     extract_data=SimpleHttpOperator(
         task_id="extract_data",

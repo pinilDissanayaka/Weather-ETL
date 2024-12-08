@@ -17,6 +17,9 @@ def kelvin_to_fahrenheit(temp_in_kelvin):
 def transform_load_data(task_instance):
     print("hi")
 
+def transform_load_data3(task_instance):
+    print("hi")
+
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -40,8 +43,13 @@ with DAG('weather_dag',
         task_id= 'transform_load_weather_data',
         python_callable=transform_load_data
         )
+        
+        transform_load_weather_data3 = PythonOperator(
+        task_id= 'transform_load_weather_data3',
+        python_callable=transform_load_data3
+        )
 
 
 
 
-        transform_load_weather_data
+        transform_load_weather_data >> transform_load_weather_data3

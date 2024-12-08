@@ -15,8 +15,7 @@ def kelvin_to_fahrenheit(temp_in_kelvin):
 
 
 def transform_load_data(task_instance):
-    data = task_instance.xcom_pull(task_ids="extract_weather_data")
-    print(data)
+    print("hi")
 
 default_args = {
     'owner': 'airflow',
@@ -37,22 +36,6 @@ with DAG('weather_dag',
         catchup=False) as dag:
 
 
-        is_weather_api_ready = HttpSensor(
-        task_id ='is_weather_api_ready',
-        http_conn_id='weathermap_api',
-        endpoint='/data/2.5/weather?q=Portland&APPID=fc78a469dfc78a469d8c847ac9b7996c55b895e2b'
-        )
-
-
-        extract_weather_data = SimpleHttpOperator(
-        task_id = 'extract_weather_data',
-        http_conn_id = 'weathermap_api',
-        endpoint='/data/2.5/weather?q=Portland&APPID=fc78a469dfc78a469d8c847ac9b7996c55b895e2b',
-        method = 'GET',
-        response_filter= lambda r: json.loads(r.text),
-        log_response=True
-        )
-
         transform_load_weather_data = PythonOperator(
         task_id= 'transform_load_weather_data',
         python_callable=transform_load_data
@@ -61,4 +44,4 @@ with DAG('weather_dag',
 
 
 
-        is_weather_api_ready >> extract_weather_data >> transform_load_weather_data
+        transform_load_weather_data

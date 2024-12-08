@@ -24,6 +24,15 @@ with DAG(
         task_id="is_api_is_ready",
         http_conn_id="weather_api",
         endpoint=f"/data/2.5/weather?q={city_name}&appid={API_KEY}"
-)
+    )
     
-    is_api_ready
+    extract_data=SimpleHttpOperator(
+        task_id="extract_data",
+        http_conn_id="weather_api",
+        endpoint=f"/data/2.5/weather?q={city_name}&appid={API_KEY}",
+        method="GET",
+        response_filter=lambda response: json.loads(response.text),
+        log_response=True
+    )
+    
+    is_api_ready >> extract_data

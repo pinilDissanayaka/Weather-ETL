@@ -11,8 +11,6 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-aws_credentials = os.getenv("AWS_CREDISTIALS")
-
 
 
 def kelvin_to_fahrenheit(temp_in_kelvin):
@@ -83,14 +81,14 @@ with DAG('weather_dag',
         is_weather_api_ready = HttpSensor(
             task_id ='is_weather_api_ready',
             http_conn_id='weathermap_api',
-            endpoint="/data/2.5/weather?q=anuradhapura&appid=fc78a469d8c847ac9b7996c55b895e2b&units=metric"
+            endpoint=f"/data/2.5/weather?q=anuradhapura&appid={os.getenv('WEATHER_API_KEY')}&units=metric"
         )
 
 
         extract_weather_data = SimpleHttpOperator(
             task_id = 'extract_weather_data',
             http_conn_id = 'weathermap_api',
-            endpoint="/data/2.5/weather?q=portland&appid=fc78a469d8c847ac9b7996c55b895e2b&units=metric",
+            endpoint=f"/data/2.5/weather?q=anuradhapura&appid={os.getenv('WEATHER_API_KEY')}&units=metric",
             method = 'GET',
 
             response_filter= lambda r: json.loads(r.text),

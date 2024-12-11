@@ -10,9 +10,9 @@ This repository contains an ELT (Extract, Load, Transform) pipeline built using 
 
 3. Data Transformation: Cleans and transforms raw data for analytical use.
 
-Scheduling and Monitoring: Leverages Apache Airflow for task orchestration, monitoring, and logging.
+4. Scheduling and Monitoring: Leverages Apache Airflow for task orchestration, monitoring, and logging.
 
-Extensible Design: Easily adapt the pipeline for new data sources or additional processing steps.
+5. Extensible Design: Easily adapt the pipeline for new data sources or additional processing steps.
 
 ## Pipeline Overview
 

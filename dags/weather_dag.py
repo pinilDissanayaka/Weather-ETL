@@ -11,9 +11,6 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
-os.environ['AWS_ACCESS_KEY_ID']=os.getenv('AWS_ACCESS_KEY_ID')
-os.environ['AWS_SECRET_ACCESS_KEY']=os.getenv('AWS_SECRET_ACCESS_KEY')
-
 
 def kelvin_to_fahrenheit(temp_in_kelvin):
     temp_in_fahrenheit = (temp_in_kelvin - 273.15) * (9/5) + 32
@@ -59,8 +56,9 @@ def transform_data(task_instance):
     
     df_data.to_csv(f"{dt_string}.csv", index=False)
 
+    aws_credentials = {"key": os.getenv("AWS_ACCESS_KEY_ID"), "secret": os.getenv("AWS_SECRET_ACCESS_KEY")}
     
-    #df_data.to_csv(f"s3://airflow2024/{dt_string}.csv", index=False, storage_options={"key": os.getenv('AWS_ACCESS_KEY_ID'), "secret": os.getenv('AWS_SECRET_ACCESS_KEY'), "token":os.getenv('AWS_SESSION_TOKEN')})
+    df_data.to_csv(f"s3://airflow2024/{dt_string}.csv", sep=",", index=False, storage_options=aws_credentials)
 
     
     

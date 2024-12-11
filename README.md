@@ -78,7 +78,7 @@ export AWS_SECRET_ACCESS_KEY=<your_aws_secret_access_key>
 export S3_BUCKET_NAME=<your_s3_bucket_name>
 ```
 
-Start the Airflow scheduler and web server:
+6. Start the Airflow scheduler and web server:
 
 ```
 airflow atandalone

@@ -11,6 +11,8 @@ from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
 
+os.environ['AWS_ACCESS_KEY_ID']=os.getenv('AWS_ACCESS_KEY_ID')
+os.environ['AWS_SECRET_ACCESS_KEY']=os.getenv('AWS_SECRET_ACCESS_KEY')
 
 
 def kelvin_to_fahrenheit(temp_in_kelvin):
@@ -54,12 +56,17 @@ def transform_data(task_instance):
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y%H%M%S")
     dt_string = 'current_weather_data_portland_' + dt_string
-    df_data.to_csv(f"s3://weatherapiairflowyoutubebucket-yml/{dt_string}.csv", index=False, storage_options=aws_credentials)
+    
+    df_data.to_csv(f"{dt_string}.csv", index=False)
+
+    
+    #df_data.to_csv(f"s3://airflow2024/{dt_string}.csv", index=False, storage_options={"key": os.getenv('AWS_ACCESS_KEY_ID'), "secret": os.getenv('AWS_SECRET_ACCESS_KEY'), "token":os.getenv('AWS_SESSION_TOKEN')})
 
     
     
 
 default_args = {
+    
     'owner': 'airflow',
     'depends_on_past': False,
     'start_date': datetime(2023, 1, 8),
